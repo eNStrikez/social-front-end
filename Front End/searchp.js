@@ -76,9 +76,9 @@ app.filter('searchFor', function(){
     				result.push(item);
     			} else if (content && item.content.toLowerCase().indexOf(name.toLowerCase()) !== -1){
                    result.push(item); 
-               } else if (tags && item.tags.includes(name)) {
+                } else if (tags && item.tags.includes(name)) {
                    result.push(item);
-               } else if (date && item.date == name.toLowerCase()){
+                } else if (date && item.date == name.toLowerCase()){
                    result.push(item);
                }
     		});

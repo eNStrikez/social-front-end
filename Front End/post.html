@@ -72,11 +72,13 @@
 
 				      	<md-chips ng-model="tags" name="tags" readonly="false"
 				                md-removable="true" md-max-chips="10" placeholder="Enter tags..."
-				                input-aria-label="Fruit names">
+                                input-aria-label="Tags">
 					        <md-chip-template>
 					          	<strong>{{$chip}}</strong>
-					        </md-chip-template>
-				      	</md-chips>
+                            </md-chip-template>    
+                        </md-chips>
+                        <md-tooltip md-direction="bottom">Press enter after each tag</md-tooltip>
+                          
 				      	<div class="errors" ng-messages="postForm.tags.$error">
 				        	<div ng-message="md-max-chips">You can have a maximum of 10 tags</div>
 				      	</div>
