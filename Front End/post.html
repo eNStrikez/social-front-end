@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+        <script src="post.js"></script>
+    </head>
+    <body ng-app="app" ng-cloak>
+        <div ng-controller="postController" layout-sm="column" class="md-inline-form" id="popupContainer">
+        	<md-toolbar class="md-hue-2" layout="column">
+                <div class="md-toolbar-tools">
+                    <md-button aria-label="Timeline" ng-disabled="{{!user.id}}" ng-href="{{'home.html'}}">
+                        Timeline
+                    </md-button>
+                    <md-button aria-label="Search Profiles" ng-href="{{'search.html'}}">
+                        Search Profiles
+                    </md-button>
+                    <md-button aria-label="Search Posts" ng-href="{{'searchp.html'}}">
+                        Search Posts
+                    </md-button>
+                    <md-button aria-label="My Page" ng-disabled="{{!user.id}}" ng-href="{{'page.html?id=' + user.id}}">
+                        My Page
+                    </md-button>
+                    <md-button aria-label="Post" ng-disabled="{{!user.id}}" ng-href="{{'post.html'}}">
+                        Create Post
+                    </md-button>
+                    <p flex></p>
+                    <md-button aria-label="Logout" ng-if="user.id" ng-href="{{'login.html'}}">
+                        Logout
+                    </md-button>
+                    <md-button aria-label="Login" ng-if="!user.id" ng-href="{{'login.html'}}">
+                        Login
+                    </md-button>                    
+                </div>
+            </md-toolbar>
+
+        	<div class="md-padding" layout="row" layout="column" layout-align="space-around" ng-if="!ready">
+                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div>
+        	<div ng-show="ready">
+	        	<md-toolbar class="md-padding"> 
+			      <div layout="row">
+			        	<h2 class="md-toolbar-tools">
+			          		<span>Create Post</span>
+			        	</h2>
+			      	</div>
+			    </md-toolbar>
+
+	        	<form name="postForm">
+    				<md-content class="md-padding" layout-xs="column"layout-align="center center">
+        				<md-input-container class="md-block" flex-gt-xs>
+					        <label>Content</label>
+					        <input maxlength="280" required md-no-asterisk name="content" ng-model="post.content">
+					        <div ng-messages="postForm.content.$error" role="alert">
+					          	<div ng-message-exp="['required', 'maxlength']">
+						            Your post must be under 280 characters
+					          	</div>
+					        </div>
+				      	</md-input-container>
+				      	<md-input-container class="md-block" flex-gt-xs>
+					        <label>Image (not required)</label>
+					        <input name="media" ng-model="post.media">
+				      	</md-input-container>
+
+				      	<md-chips ng-model="tags" name="tags" readonly="false"
+				                md-removable="true" md-max-chips="10" placeholder="Enter tags..."
+				                input-aria-label="Fruit names">
+					        <md-chip-template>
+					          	<strong>{{$chip}}</strong>
+					        </md-chip-template>
+				      	</md-chips>
+				      	<div class="errors" ng-messages="postForm.tags.$error">
+				        	<div ng-message="md-max-chips">You can have a maximum of 10 tags</div>
+				      	</div>
+				    </md-content>
+
+			      	<md-content layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+				      	<md-button ng-click="post()" class="md-raised md-primary" ng-disabled="!post.content">Create Post</md-button>
+			      	</md-content>
+    			</form>
+	        </div>
+        </div>
+    </body>
+</html>

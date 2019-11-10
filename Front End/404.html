@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+        <script src="404.js"></script>
+    </head>
+    <body ng-app="app" ng-cloak>
+        <div ng-controller="404Controller">
+        	<md-toolbar class="md-hue-2" layout="column">
+		      	<div class="md-toolbar-tools">
+		        	<md-button aria-label="Timeline" ng-disabled="{{!user.id}}" ng-href="{{'home.html'}}">
+          				Timeline
+        			</md-button>
+		        	<md-button aria-label="Search Profiles" ng-href="{{'search.html'}}">
+          				Search Profiles
+        			</md-button>
+        			<md-button aria-label="Search Posts" ng-href="{{'searchp.html'}}">
+          				Search Posts
+        			</md-button>
+        			<md-button aria-label="My Page" ng-disabled="{{!user.id}}" ng-href="{{'page.html?id=' + user.id}}">
+          				My Page
+        			</md-button>
+        			<md-button aria-label="Post" ng-disabled="{{!user.id}}" ng-href="{{'post.html'}}">
+          				Create Post
+        			</md-button>
+        			<p flex></p>
+                    <md-button aria-label="Logout" ng-if="user.id" ng-href="{{'login.html'}}">
+                        Logout
+                    </md-button>
+        			<md-button aria-label="Login" ng-if="!user.id" ng-href="{{'login.html'}}">
+          				Login
+        			</md-button>        			
+		      	</div>
+		    </md-toolbar>
+		    <md-toolbar class="md-padding"> 
+			      <div layout="row">
+			        	<h2 class="md-toolbar-tools">
+			          		<span>404 Error</span>
+			        	</h2>
+			      	</div>
+			</md-toolbar>
+		    <md-content class="md-padding" layout="column">
+		    	This page does not exist. Please use the toolbar to go to a valid page.
+		    </md-content>
+        </div>
+    </body>
+</html>

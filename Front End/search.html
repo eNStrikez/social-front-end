@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+        <script src="search.js"></script>
+    </head>
+    <body ng-app="app" ng-cloak>
+        <div ng-controller="searchController" layout-sm="column" >
+            <md-content>
+            	<md-toolbar class="md-hue-2" layout="column">
+                    <div class="md-toolbar-tools">
+                        <md-button aria-label="Timeline" ng-disabled="{{!user.id}}" ng-href="{{'home.html'}}">
+                            Timeline
+                        </md-button>
+                        <md-button aria-label="Search Profiles" ng-href="{{'search.html'}}">
+                            Search Profiles
+                        </md-button>
+                        <md-button aria-label="Search Posts" ng-href="{{'searchp.html'}}">
+                            Search Posts
+                        </md-button>
+                        <md-button aria-label="My Page" ng-disabled="{{!user.id}}" ng-href="{{'page.html?id=' + user.id}}">
+                            My Page
+                        </md-button>
+                        <md-button aria-label="Post" ng-disabled="{{!user.id}}" ng-href="{{'post.html'}}">
+                            Create Post
+                        </md-button>
+                        <p flex></p>
+                        <md-button aria-label="Logout" ng-if="user.id" ng-href="{{'login.html'}}">
+                            Logout
+                        </md-button>
+                        <md-button aria-label="Login" ng-if="!user.id" ng-href="{{'login.html'}}">
+                            Login
+                        </md-button>                        
+                    </div>
+                </md-toolbar>
+                
+            	<div class="md-padding" layout="row" layout-sm="column" layout-align="space-around" ng-if="!profiles || profiles.length == 0 || profiles == []">
+          			<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        		</div>
+            	<div ng-if="profiles.length > 0" layout="column" layout-align="center center">
+            		<md-toolbar>
+    			      	<div layout="row">
+    			        	<h2 class="md-toolbar-tools">
+    			          		<span>Search Profiles</span>
+    			        	</h2>
+    			      	</div>
+    		    	</md-toolbar>
+    			  	<md-subheader class="md-primary">
+    		            <md-input-container flex>
+    		                <label>Search</label>
+    		                <input type="text" ng-model="name"/>
+    		            </md-input-container>
+    	            </md-subheader>
+    				<md-content class="md-padding" layout="column" layout-align="center center">
+    					<div flex-xs flex-gt-xs="500">
+    			            <md-list>
+    			                <md-list-item ng-repeat="p in profiles | searchFor:name" ng-href="{{'page.html?id=' + p.id}}">
+    			                	<div ng-if="p.icon != ' '">
+    			                    	<img ng-src="{{p.icon}}" class="md-avatar"/>
+    			                    </div>
+    	      						<div class="md-list-item-text" layout="column">
+    	            					<h4>{{ p.name }}</h4>
+    	            					<p>{{'#' + p.id }}</p>
+    	        					</div>
+    	        					<md-divider ng-if="!$last"></md-divider>
+    			                </md-list-item>
+    			            </md-list>  
+    		            </div>
+    	        	</md-content>
+    	        </div>
+            </md-content>
+        </div>
+    </body>
+</html>

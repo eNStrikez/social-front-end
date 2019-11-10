@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+        <script src="home.js"></script>
+    </head>
+    <body ng-app="app" ng-cloak>
+        <div ng-controller="homeController">
+        	<md-toolbar class="md-hue-2" layout="column">
+		      	<div class="md-toolbar-tools">
+		        	<md-button aria-label="Timeline" ng-disabled="{{!user.id}}" ng-href="{{'home.html'}}">
+          				Timeline
+        			</md-button>
+		        	<md-button aria-label="Search Profiles" ng-href="{{'search.html'}}">
+          				Search Profiles
+        			</md-button>
+        			<md-button aria-label="Search Posts" ng-href="{{'searchp.html'}}">
+          				Search Posts
+        			</md-button>
+        			<md-button aria-label="My Page" ng-disabled="{{!user.id}}" ng-href="{{'page.html?id=' + user.id}}">
+          				My Page
+        			</md-button>
+        			<md-button aria-label="Post" ng-disabled="{{!user.id}}" ng-href="{{'post.html'}}">
+          				Create Post
+        			</md-button>
+        			<p flex></p>
+                    <md-button aria-label="Logout" ng-if="user.id" ng-href="{{'login.html'}}">
+                        Logout
+                    </md-button>
+        			<md-button aria-label="Login" ng-if="!user.id" ng-href="{{'login.html'}}">
+          				Login
+        			</md-button>        			
+		      	</div>
+		    </md-toolbar>
+
+        	<div class="md-padding" layout="row" layout="column" layout-align="space-around" ng-if="!ready">
+      			<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    		</div>
+        	<div ng-if="ready">
+	        	<md-toolbar class="md-padding"> 
+			        <div layout="row">
+			        	<md-toolbar-filler layout="row" layout-align="center center">
+			          		<img ng-src="{{user.icon}}" class="md-user-avatar"></img>
+			        	</md-toolbar-filler>
+			        	<h2 class="md-toolbar-tools">
+			          		<span>{{user.name}}'s Timeline</span>
+			        	</h2>
+			      	</div>
+			    </md-toolbar>
+
+			  	<md-subheader class="md-primary" layout="column" layout-align="center center">
+		            <md-input-container flex >
+		                <label>Search in timeline</label>
+		                <input type="text" ng-model="name"/>
+		            </md-input-container>
+	            </md-subheader>
+
+				<md-content class="md-padding" layout-xs="column" layout="row" layout-align="center center">
+		            <md-list>
+		                <md-list-item ng-repeat="p in posts | searchFor:name">
+		                	<div flex-xs flex-gt-xs="100" layout="column">
+			                    <md-card layout-align="space-around center">
+							        <md-card-header>
+							          	<md-card-avatar>
+								            <img ng-src="{{p.icon}}" class="md-user-avatar"></img>
+							          	</md-card-avatar>
+							          	<md-card-header-text>
+							            	<span class="md-title">{{p.name}}</span>
+								            <span class="md-subhead">{{'#' + p.tag}}</span>
+							          	</md-card-header-text>
+							        </md-card-header>
+							        <md-card-content>
+							        </md-card-content>
+							        	<p class="md-padding">{{p.content}}</p >
+							        <md-card-title>
+							          	<md-card-title-text layout="column" layout-align="space-around center">
+							          		<md-card-title-media>
+							          			<img ng-if="p.media != null" ng-src="{{p.media}}" class="md-card-image" alt="Media" id="post-image">
+							          		</md-card-title-media>
+							            	<span class="md-subhead">{{p.date}}</span>
+							            	<span class="md-subhead">{{p.timestamp}}</span>
+							          	</md-card-title-text>
+							        </md-card-title>
+
+							        <md-chips ng-model="p.tags" readonly="true" md-removable="false" input-aria-label="Tags">
+							        	<md-chip-template>
+							          		<strong>{{$chip}}</strong>
+							        	</md-chip-template>
+							        </md-chips>
+							     	
+							        <md-card-actions layout="row" layout-align="start center">
+							          	<md-button ng-if="user.id != p.tag" ng-click="follow(p.tag)" aria-label="Unfollow or follow user">
+							          		<p ng-if="!user.following.includes(p.tag)">Follow</p>
+							          		<p ng-if="user.following.includes(p.tag)">Unfollow</p>
+							          	</md-button>
+							          	<md-button ng-href="{{'page.html?id=' + p.tag}}">Go To Page</md-button>
+							        </md-card-actions>
+
+							        
+						      	</md-card>
+					      	</div>
+		                </md-list-item>
+		            </md-list>   
+	        	</md-content>
+	        </div>
+        </div>
+    </body>
+</html>
