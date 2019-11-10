@@ -12,6 +12,7 @@ app.controller('postController', function ($scope, $mdDialog, $http){
     $scope.ready = false;
     $scope.tags = [];
 
+    // Gets user info or redirects to login if not available
     if (!sessionStorage.getItem("user")) {
         window.location.replace('login.html');
     } else {
@@ -21,6 +22,7 @@ app.controller('postController', function ($scope, $mdDialog, $http){
 
     $scope.ready = true;
 
+    // Failure dialogue
     let failedPost = function() {
         $mdDialog.show(
             $mdDialog.alert()
@@ -33,6 +35,7 @@ app.controller('postController', function ($scope, $mdDialog, $http){
         );
     };
 
+    // Success dialogue
     let successfulPost = function() {
         $mdDialog.show(
             $mdDialog.alert()
@@ -45,6 +48,7 @@ app.controller('postController', function ($scope, $mdDialog, $http){
         );
     };
 
+    // Adds a new post using the form
     $scope.post = () => {
         $scope.ready = false;
         $http.post('https://nap1g17-cw1.azurewebsites.net/api/InsertPost', JSON.stringify(
@@ -61,7 +65,7 @@ app.controller('postController', function ($scope, $mdDialog, $http){
             $scope.ready = true;
         }, (res, status) => {
             $scope.ready = true;
-            failedLogin();
+            failedPost();
         });
     }    
 });

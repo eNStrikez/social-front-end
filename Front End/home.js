@@ -1,6 +1,9 @@
+// Initialises AngularJS app and sets default theme as Dark
 var app = angular.module('app', ['ngMaterial', 'ngMessages']).config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default').backgroundPalette('grey').dark();
 });
+
+// Sets up headers for POST requests to Functions
 const config = {
     headers: {
         'Content-Type': 'application/json',
@@ -11,6 +14,7 @@ const config = {
 app.controller('homeController', function ($scope, $http){
     $scope.ready = false;
 
+    // Gets user info or redirects them to login page if not available
     if (!sessionStorage.getItem("user")) {
         window.location.replace('login.html');
     } else {
@@ -24,7 +28,7 @@ app.controller('homeController', function ($scope, $http){
 
     $scope.posts = [];
     let count = 0;
-
+    // Gets posts for timeline
     for (let p = 0; p < $scope.user.following.length; p++){
         $http.post('https://nap1g17-cw1.azurewebsites.net/api/QueryPosts', JSON.stringify({"tag": $scope.user.following[p]}), config).then((res, status) => {
             for (let i = 0; i < res.data.length; i++){
@@ -44,6 +48,7 @@ app.controller('homeController', function ($scope, $http){
         });
     }
 
+    // Updates new follow relationship on client and server
     $scope.follow = (followed) => {
         $scope.ready = false;
         let add = !$scope.user.following.includes(followed);
@@ -64,7 +69,7 @@ app.controller('homeController', function ($scope, $http){
 });
 
 app.filter('searchFor', function(){
-	
+	// Filters posts by keyword search
 	return function(arr, name){
         if (arr)
             arr.sort((a,b) => b._ts - a._ts);

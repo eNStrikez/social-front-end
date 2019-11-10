@@ -16,13 +16,14 @@ app.controller('searchPostsController', function ($scope, $http){
     $scope.tagSearch = true;
     $scope.dateSearch = true;
 
+    // Obtains user info
     if (sessionStorage.getItem("user")) {
         $scope.user = JSON.parse(sessionStorage.getItem("user"))[0];
     }
 
     $scope.posts = [];
 
-    
+    // Retrieves list of posts
     $scope.ready = false;
     $http.post('https://nap1g17-cw1.azurewebsites.net/api/RetrieveAllPosts', config).then((res, status) => {
         for (let i = 0; i < res.data.length; i++){
@@ -35,7 +36,7 @@ app.controller('searchPostsController', function ($scope, $http){
     });
     
 
-
+    // Updates new follow relationships
     $scope.follow = (followed) => {
         $scope.ready = false;
         let add = !$scope.user.following.includes(followed);
@@ -56,7 +57,7 @@ app.controller('searchPostsController', function ($scope, $http){
 });
 
 app.filter('searchFor', function(){
-	
+	// Filters and sorts data
 	return function(arr, param, profile, content, tags, date){
         if (arr)
             arr.sort((a,b) => b._ts - a._ts);
@@ -70,6 +71,7 @@ app.filter('searchFor', function(){
 	    let result = [];
         let params = param.replace(" ", "").split(",");
 
+        // Filters items that do not contain one of the params in the fields being searched by
         angular.forEach(params, function(name){
     		angular.forEach(arr, function(item){
     			if(profile && (('#' + item.tag.toLowerCase()).indexOf(name.toLowerCase()) !== -1 || item.name.toLowerCase().indexOf(name.toLowerCase()) !== -1)){

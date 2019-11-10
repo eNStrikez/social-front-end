@@ -14,8 +14,10 @@ app.controller('pageController', function ($scope, $http){
     $scope.readyFollowing = false;
     $scope.readyFollowers = false;
 
+    // Gets URL parameters
     let tag = new URL(window.location.href).searchParams.get("id");
 
+    // Gets user info or redirects them to login if not available
     if (sessionStorage.getItem("user")) {
         $scope.user = JSON.parse(sessionStorage.getItem("user"))[0];
         console.log($scope.user);
@@ -25,7 +27,9 @@ app.controller('pageController', function ($scope, $http){
         };
     }
 
+    // Obtains list of posts, followers and followed users using Functions
     if (tag != $scope.user.id) {
+        // Gets target profile
         $http.post('https://nap1g17-cw1.azurewebsites.net/api/QueryProfile', JSON.stringify({"tag": tag}), config).then((res, status) => {
             $scope.page = res.data[0];
             $scope.posts = [];
@@ -40,6 +44,7 @@ app.controller('pageController', function ($scope, $http){
                 $scope.readyFollowers = true;
             }
 
+            // Gets posts
             $http.post('https://nap1g17-cw1.azurewebsites.net/api/QueryPosts', JSON.stringify({"tag": tag}), config).then((res, status) => {
                 for (let i = 0; i < res.data.length; i++){
                     $scope.posts.push(res.data[i]);
@@ -50,6 +55,7 @@ app.controller('pageController', function ($scope, $http){
                 $scope.readyPosts = true;
             });
 
+            // Gets following
             for (let p = 0; p < $scope.page.following.length; p++) {
                 $http.post('https://nap1g17-cw1.azurewebsites.net/api/QueryProfile', JSON.stringify({"tag": $scope.page.following[p]}), config).then((res, status) => {
                     for (let i = 0; i < res.data.length; i++){
@@ -62,6 +68,7 @@ app.controller('pageController', function ($scope, $http){
                 });
             }
 
+            // Gets followers
             for (let p = 0; p < $scope.page.followers.length; p++) {
                 $http.post('https://nap1g17-cw1.azurewebsites.net/api/QueryProfile', JSON.stringify({"tag": $scope.page.followers[p]}), config).then((res, status) => {
                     for (let i = 0; i < res.data.length; i++){
@@ -78,6 +85,7 @@ app.controller('pageController', function ($scope, $http){
             console.log("No profile found");
         });
     } else {
+        // Doesn't need to use QueryProfile, as user info is already stored
         $scope.posts = [];
         $scope.profiles = [];
         $scope.following = [];
@@ -92,6 +100,7 @@ app.controller('pageController', function ($scope, $http){
             $scope.readyFollowers = true;
         }
 
+        // Gets posts
         $http.post('https://nap1g17-cw1.azurewebsites.net/api/QueryPosts', JSON.stringify({"tag": tag}), config).then((res, status) => {
             for (let i = 0; i < res.data.length; i++){
                 $scope.posts.push(res.data[i]);
@@ -102,6 +111,7 @@ app.controller('pageController', function ($scope, $http){
             $scope.readyPosts = true;
         });
 
+        // Gets following
         for (let p = 0; p < $scope.page.following.length; p++) {
             $http.post('https://nap1g17-cw1.azurewebsites.net/api/QueryProfile', JSON.stringify({"tag": $scope.page.following[p]}), config).then((res, status) => {
                 for (let i = 0; i < res.data.length; i++){
@@ -114,6 +124,7 @@ app.controller('pageController', function ($scope, $http){
             });
         }
 
+        // Gets followers
         for (let p = 0; p < $scope.page.followers.length; p++) {
             $http.post('https://nap1g17-cw1.azurewebsites.net/api/QueryProfile', JSON.stringify({"tag": $scope.page.followers[p]}), config).then((res, status) => {
                 for (let i = 0; i < res.data.length; i++){
@@ -127,6 +138,7 @@ app.controller('pageController', function ($scope, $http){
         }
     }
 
+    // Updates a new follow relationship on both client and server
     $scope.follow = (followed) => {
         $scope.readyPosts = false;
         let add = !$scope.user.following.includes(followed);
@@ -154,7 +166,7 @@ app.controller('pageController', function ($scope, $http){
 });
 
 app.filter('searchFor', function(){
-	
+    // Searches posts by keyword
 	return function(arr, name){
         if (arr)
             arr.sort((a,b) => b._ts - a._ts);
@@ -179,7 +191,7 @@ app.filter('searchFor', function(){
 });
 
 app.filter('profileSearchFor', function(){
-    
+    // Searches profiles by keyword
     return function(arr, name){
         if(!name){
             return arr;

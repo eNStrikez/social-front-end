@@ -23,6 +23,7 @@ app.controller('loginController', function ($scope, $mdDialog, $http){
         icon: null
     };
 
+    // Sets up success and failure dialogues
     let failedLogin = function() {
         $mdDialog.show(
             $mdDialog.alert()
@@ -47,6 +48,7 @@ app.controller('loginController', function ($scope, $mdDialog, $http){
         );
     };
 
+    // Authenticates user
     $scope.login = () => {
         $scope.loading = true;
         $http.post('https://nap1g17-cw1.azurewebsites.net/api/AuthenticateProfile', JSON.stringify({"tag":$scope.user.tag,"password":$scope.user.password}), config).then((res, status) => {
@@ -59,6 +61,7 @@ app.controller('loginController', function ($scope, $mdDialog, $http){
         });
     }
 
+    // Adds a new user
     $scope.createAccount = () => {
         $scope.loading = true;
         if (!$scope.user.icon) {
